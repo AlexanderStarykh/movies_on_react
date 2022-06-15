@@ -21,17 +21,27 @@ class Main extends React.Component {
             });
     }
 
-    searchMovies = (str, type = 'all') => {
+    searchMovies = (str = 'avengers', type = 'all') => {
         this.setState({loading: true})
-        fetch(`https://www.omdbapi.com/?apikey=${API_KEY_OMDB}&s=${str}${
-                type !== 'all' ? `&type=${type}` : ''
-            }`)
+         str === '' ? (
+            fetch(`https://www.omdbapi.com/?apikey=${API_KEY_OMDB}&s=matrix`)
             .then((response) => response.json())
             .then((data) => this.setState({ movies: data.Search, loading: false }))
             .catch((err) => {
                 console.error(err);
                 this.setState({loading: false});
             })
+            ) : (
+                fetch(`https://www.omdbapi.com/?apikey=${API_KEY_OMDB}&s=${str}${
+                    type !== 'all' ? `&type=${type}` : ''
+                    }`)
+                    .then((response) => response.json())
+                    .then((data) => this.setState({ movies: data.Search, loading: false }))
+                    .catch((err) => {
+                        console.error(err);
+                        this.setState({loading: false});
+                    })
+                )
     };
 
     render() {
